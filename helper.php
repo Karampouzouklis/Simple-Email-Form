@@ -91,6 +91,7 @@ class _SimpleEmailForm {
 	public $dir 		= '';
 	public $copyMe 		= '';
 	public $copyMeAuto 	= '';
+	public $confirmation = '';
 	public $error 		= '';
 }
 
@@ -129,6 +130,7 @@ class modSimpleEmailForm {
 	protected $_copymeLabel 	= '';
 	protected $_copymeActive 	= 0;
 	protected $_copymeAuto 		= 0;
+	protected $_confirmation	= 0;
 	protected $_errorTxtColor	= '';
 	protected $_successTxtColor	= '';
 	protected $_anchor			= '';
@@ -163,6 +165,7 @@ class modSimpleEmailForm {
 		$this->_copymeLabel 	= $params->get('mod_simpleemailform_copymeLabel');
 		$this->_copymeActive 	= $params->get('mod_simpleemailform_copymeActive');
 		$this->_copymeAuto 		= $params->get('mod_simpleemailform_copymeAuto');
+		$this->_confirmation	= $params->get('mod_simpleemailform_confirmation');
 		$this->_errorTxtColor	= $params->get('mod_simpleemailform_errorTxtColor');
 		$this->_successTxtColor = $params->get('mod_simpleemailform_successTxtColor');
 		$this->_anchor 			= $params->get('mod_simpleemailform_anchor');
@@ -336,6 +339,7 @@ class modSimpleEmailForm {
 		$this->_msg->copyMe	 	=  0;	// NOTE: depends on what user selects
 		$this->_msg->fromName 	= $params->get('mod_simpleemailform_fromName');
 		$this->_msg->copyMeAuto = ($this->_copymeAuto == 'Y') ? 1 : 0;
+		$this->_msg->confirmation = ($this->_confirmation == 'Y') ? 1 : 0;
 		// TODO: check for multiple targets, and, if so, convert to array()
 		$to  = trim($params->get('mod_simpleemailform_emailTo'));
 		$cc  = trim($params->get('mod_simpleemailform_emailCC'));
@@ -674,6 +678,20 @@ class modSimpleEmailForm {
 					throw new Exception($this->_transLang['MOD_SIMPLEEMAILFORM_error']);
 				}
 			}
+			// TODO: Make confirmation message user editable
+			if ($msg->confirmation) {
+				$message->ClearAllRecipients();
+				$message->addRecipient($msg->from, $msg->fromName);
+				$message->setBody("Dear ".$_POST['mod_simpleemailform_field1_1']." ".$_POST['mod_simpleemailform_field2_1']." \n\n".
+									"We have received your details. \n Thank you for contacting us \n\n".
+									"Regards, \n\n".
+									"Your friendly site owners"
+									);
+				if (!$sent = $message->send()) {
+					throw new Exception($this->_transLang['MOD_SIMPLEEMAILFORM_error']);
+				}
+				
+			}			
 			$result = TRUE;
 		} catch (Exception $e) {
 			$result = FALSE;

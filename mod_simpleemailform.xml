@@ -386,6 +386,10 @@
 					<option value="Y">JYES</option>
 					<option value="N">JNO</option>
 				</field>
+                <field name="mod_simpleemailform_confirmation"  	type="radio"	      default="N" 			label="Send User a Confirmation Message" description="Select 'Y' if you want to send a confirmation message to users" >
+					<option value="Y">JYES</option>
+					<option value="N">JNO</option>
+				</field>				
 				<field name="mod_simpleemailform_emailCheck"	type="radio"	      default="Y" 			label="Email Check" description="Select 'Y' if you want to check the 'From' email address.  Set to 'N' to disable this check.  If email check is disabled, the 'From' field will automatically take its value from what you entered as a default value for the 'From' field." >
 					<option value="Y">JYES</option>
 					<option value="N">JNO</option>
